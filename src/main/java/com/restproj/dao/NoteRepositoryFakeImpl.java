@@ -1,6 +1,7 @@
 package com.restproj.dao;
 
 import com.restproj.model.Note;
+import com.restproj.model.User;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -15,8 +16,8 @@ public class NoteRepositoryFakeImpl implements NoteRepository {
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-            notes.put(1L, new Note(1L, "Hello!", "Hello title", simpleDateFormat.parse("2021-05-12 13:41:00")));
-            notes.put(2L, new Note(2L, "Hello, Spring", "Spring", simpleDateFormat.parse("2021-03-01 10:27:30")));
+            notes.put(1L, new Note(1L, "Hello!", "Hello title", simpleDateFormat.parse("2021-05-12 13:41:00"), new User()));
+            notes.put(2L, new Note(2L, "Hello, Spring", "Spring", simpleDateFormat.parse("2021-03-01 10:27:30"), new User()));
         }catch(ParseException ex){
             System.out.println("Exception in data generation:\n" + ex);
         }

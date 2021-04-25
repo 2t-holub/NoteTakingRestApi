@@ -28,4 +28,8 @@ public class Note {
 
     @Column(name = "note_time", nullable = false)
     private Date actualTime;
+
+    @ManyToOne()
+    @JoinColumn(name="author")
+    private User user;
 }
