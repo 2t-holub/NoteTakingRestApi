@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface NoteRepository {
 
-    public Note save(Note note);
+    Note save(Note note);
 
-    public Note findById(Long id);
+    Note findById(Long id);
 
-    public Note update(Note note);
+    Note update(Note note);
 
-    public void delete(Note note);
+    void delete(Note note);
 
-    public List<Note> findAll();
+    List<Note> findAll();
 }

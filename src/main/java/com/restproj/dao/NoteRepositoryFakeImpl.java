@@ -9,7 +9,7 @@ import java.util.*;
 
 @Component
 public class NoteRepositoryFakeImpl implements NoteRepository {
-    private static Map<Long,Note> notes = new HashMap<>();
+    private static Map<Long, Note> notes = new HashMap<>();
 
     public NoteRepositoryFakeImpl() {
         try {

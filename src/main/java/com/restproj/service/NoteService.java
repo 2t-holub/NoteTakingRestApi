@@ -1,6 +1,6 @@
 package com.restproj.service;
 
-import com.restproj.dao.NoteRepository;
+import com.restproj.dao.NoteRepositoryRealImpl;
 import com.restproj.model.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +10,10 @@ import java.util.List;
 @Service
 public class NoteService {
     @Autowired
-    private NoteRepository noteRepository;
+    private NoteRepositoryRealImpl noteRepository;
 
     public Note save(Note note){
+        note.setId(null);
         return noteRepository.save(note);
     }
 

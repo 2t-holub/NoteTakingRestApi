@@ -1,6 +1,5 @@
 package com.restproj.controller;
 
-
 import com.restproj.model.Note;
 import com.restproj.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
