@@ -15,7 +15,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/notes")
+@RequestMapping("/api/users/{userId}/notes")
 public class NoteController {
     @Autowired
     private NoteService noteService;
@@ -24,18 +24,22 @@ public class NoteController {
     private UserService userService;
 
     @GetMapping
-    public List<Note> getAll(){
-        return noteService.findAll();
+    public ResponseEntity<List<Note>> getAll(@PathVariable Long userId, Principal principal){
+        User user = userService.findByLogin(principal.getName());
+        if(user.getId().equals(userId) || user.getRole().equals(Role.ADMIN)) {
+            return new ResponseEntity<>(noteService.findAll(userId), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Note> getById(@PathVariable(name = "id") Long id, Principal principal){
+    public ResponseEntity<Note> getById(@PathVariable Long userId, @PathVariable(name = "id") Long id, Principal principal){
         User user = userService.findByLogin(principal.getName());
         Note note = noteService.findById(id);
         if(note == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if(user.equals(note.getUser()) || user.getRole().equals(Role.ADMIN)) {
+        if((user.equals(note.getUser()) || user.getRole().equals(Role.ADMIN)) && userId.equals(note.getUser().getId())) {
             return new ResponseEntity<>(noteService.findById(id), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -50,7 +54,7 @@ public class NoteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> update(@PathVariable Long id, @RequestBody Note note, Principal principal){
+    public ResponseEntity<Note> update(@PathVariable Long userId, @PathVariable Long id, @RequestBody Note note, Principal principal){
         if(!id.equals(note.getId())){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -59,20 +63,20 @@ public class NoteController {
         if(oldNote == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if (user.equals(oldNote.getUser()) || user.getRole().equals(Role.ADMIN)){
+        if ((user.equals(oldNote.getUser()) || user.getRole().equals(Role.ADMIN)) && userId.equals(note.getUser().getId())){
             return new ResponseEntity(noteService.update(note), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id, Principal principal){
+    public ResponseEntity delete(@PathVariable Long userId, @PathVariable Long id, Principal principal){
         User user = userService.findByLogin(principal.getName());
         Note note = noteService.findById(id);
         if(note == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if(user.equals(note.getUser()) || user.getRole().equals(Role.ADMIN)){
+        if((user.equals(note.getUser()) || user.getRole().equals(Role.ADMIN)) && userId.equals(note.getUser().getId())){
             noteService.delete(note);
             return new ResponseEntity(HttpStatus.OK);
         }

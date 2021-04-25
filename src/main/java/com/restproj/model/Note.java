@@ -29,7 +29,7 @@ public class Note {
     @Column(name = "note_time", nullable = false)
     private Date actualTime;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="author")
     private User user;
 }

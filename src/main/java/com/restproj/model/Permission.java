@@ -1,8 +1,8 @@
 package com.restproj.model;
 
 public enum Permission {
-    OWN_NOTES_READ_WRITE("notes:own"),
-    ALL_NOTES_READ_WRITE("notes:all");
+    OWN_READ_WRITE("own"),
+    ALL_READ_WRITE("all");
 
     private final String permission;
 
